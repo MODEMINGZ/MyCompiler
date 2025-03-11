@@ -2,11 +2,14 @@
 
 
 class Token:
-    type: str
-    value: any = None
-    # 行号和列号,用于定位错误
-    line: int
-    column: int
+
+    def __init__(
+        self, token_type: str, value: any = None, line: int = None, column: int = None
+    ):
+        self.token_type = token_type
+        self.value = value
+        self.line = line
+        self.column = column
 
     def __repr__(self):
         # 自定义返回内容
