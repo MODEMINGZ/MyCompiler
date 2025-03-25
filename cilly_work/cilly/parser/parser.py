@@ -72,7 +72,7 @@ class Parser:
             return self.expr_statement()
 
     def define_statement(self):
-        """定义语句"""
+        """获取定义语句"""
         self.match("var")
         identifier = get_token_value(self.match("id"))
         self.match("=")
@@ -81,7 +81,7 @@ class Parser:
         return ["define", identifier, expr]
 
     def assign_statement(self):
-        """赋值语句"""
+        """获取赋值语句"""
         identifier = get_token_value(self.match("id"))
         self.match("=")
         expr = self.expr()
@@ -89,7 +89,7 @@ class Parser:
         return ["assign", identifier, expr]
 
     def print_statement(self):
-        """打印语句"""
+        """获取打印语句"""
         self.match("print")
         self.match("(")
         args = self.args() if self.peek() != ")" else []
@@ -98,7 +98,7 @@ class Parser:
         return ["print", args]
 
     def if_statement(self):
-        """条件语句"""
+        """获取条件语句"""
         self.match("if")
         self.match("(")
         condition = self.expr()
@@ -111,7 +111,7 @@ class Parser:
         return ["if", condition, true_branch, false_branch]
 
     def while_statement(self):
-        """循环语句"""
+        """获取循环语句"""
         self.match("while")
         self.match("(")
         condition = self.expr()
@@ -120,26 +120,26 @@ class Parser:
         return ["while", condition, body]
 
     def break_statement(self):
-        """中断语句"""
+        """获取中断语句"""
         self.match("break")
         self.match(";")
         return ["break"]
 
     def continue_statement(self):
-        """继续语句"""
+        """获取继续语句"""
         self.match("continue")
         self.match(";")
         return ["continue"]
 
     def return_statement(self):
-        """返回语句"""
+        """获取返回语句"""
         self.match("return")
         expr = self.expr() if self.peek() != ";" else None
         self.match(";")
         return ["return", expr]
 
     def block_statement(self):
-        """块语句"""
+        """获取块语句"""
         self.match("{")
         statements = []
         while self.peek() != "}":
@@ -148,13 +148,13 @@ class Parser:
         return ["block", statements]
 
     def expr_statement(self):
-        """表达式语句"""
+        """获取表达式语句"""
         expr = self.expr()
         self.match(";")
         return ["expr_statement", expr]
 
     def for_statement(self):
-        """循环语句"""
+        """获取循环语句"""
         self.match("for")
         self.match("(")
         init = self.statement()
@@ -165,7 +165,7 @@ class Parser:
         return ["for", init, condition, update, body]
 
     def fun_statement(self):
-        """函数定义语句"""
+        """获取函数定义语句"""
         self.match("fun")
         name = get_token_value(self.match("id"))
         self.match("(")
@@ -235,7 +235,7 @@ class Parser:
             raise ParserError(f"意外的token: {tag}")
 
     def lbp(self, token):
-        """返回token左结合的权值left binding power"""
+        """返回表达式token左结合字符的权值left binding power"""
         tag = get_token_tag(token)
         if tag == "?":
             return 5

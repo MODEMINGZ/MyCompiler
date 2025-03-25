@@ -35,8 +35,17 @@ class Scanner:
         while self.current_char in [" ", "\t", "\r", "\n"]:
             self.advance()
 
+    def skip_comment(self):
+        """跳过注释"""
+        # 跳过 '//'
+        self.advance()
+        self.advance()
+        # 跳过注释内容直到行尾
+        while self.current_char is not None and self.current_char != "\n":
+            self.advance()
+
     def scan_number(self):
-        """获取数字类型token。"""
+        """获取数字类型token"""
         result = ""
         while self.current_char and self.current_char.isdigit():
             result += self.current_char
@@ -88,6 +97,11 @@ class Scanner:
                 self.skip_whitespace()
                 if self.current_char is None:  # 如果跳过空白字符后到达了输入末尾
                     return EOF_TOKEN
+                continue
+
+            # 处理注释
+            if self.current_char == "/" and self.peek() == "/":
+                self.skip_comment()
                 continue
 
             if self.current_char.isdigit():
